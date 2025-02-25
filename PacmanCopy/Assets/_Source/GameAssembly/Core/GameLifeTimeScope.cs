@@ -11,6 +11,7 @@ namespace Core
             #region Player
 
             builder.Register<ITickable, PcPlayerInput>(Lifetime.Singleton).As<IPlayerInput>();
+            builder.Register<Scores>(Lifetime.Singleton);
 
             #endregion
         }
