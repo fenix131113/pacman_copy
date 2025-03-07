@@ -1,3 +1,4 @@
+using Level;
 using Player;
 using VContainer;
 using VContainer.Unity;
@@ -12,8 +13,13 @@ namespace Core
 
             builder.Register<ITickable, PcPlayerInput>(Lifetime.Singleton).As<IPlayerInput>();
             builder.Register<Scores>(Lifetime.Singleton);
+            builder.Register<PlayerHealth>(Lifetime.Singleton);
 
             #endregion
+
+            builder.RegisterComponentInHierarchy<BonusLoader>();
+
+            builder.RegisterComponentInHierarchy<Map>();
         }
     }
 }

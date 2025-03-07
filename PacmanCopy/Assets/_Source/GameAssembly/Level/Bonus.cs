@@ -1,7 +1,6 @@
 ﻿using Player;
 using UnityEngine;
 using Utils;
-using VContainer;
 
 namespace Level
 {
@@ -12,9 +11,6 @@ namespace Level
 
         private Scores _scores;
 
-        [Inject]
-        private void Construct(Scores scores) => _scores = scores;
-
         public void Init(Scores scores) => _scores = scores;
 
         private void OnTriggerEnter2D(Collider2D
@@ -23,6 +19,7 @@ namespace Level
             if(!LayerService.CheckLayersEquality(other.gameObject.layer, interactLayer))
                 return;
             
+            _scores.AddCollectedBonus();
             _scores.AddScore(score);
             gameObject.SetActive(false);
         }

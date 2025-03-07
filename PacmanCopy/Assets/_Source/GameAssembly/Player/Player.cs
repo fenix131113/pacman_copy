@@ -11,12 +11,9 @@ namespace Player
         private IPlayerInput _playerInput;
 
         [Inject]
-        private void Construct(IPlayerInput playerInput)
-        {
-            _playerInput = playerInput;
-        }
+        private void Construct(IPlayerInput playerInput) => _playerInput = playerInput;
 
-        private void Update() => entity.Move();
+        private void Update() => entity.CustomMoveEntity();
 
         private void Start() => Bind();
 
@@ -35,10 +32,10 @@ namespace Player
                 default:
                     switch (moveVector.y)
                     {
-                        case > 0:
+                        case < 0:
                             entity.Rotate(MoveDirection.UP);
                             break;
-                        case < 0:
+                        case > 0:
                             entity.Rotate(MoveDirection.DOWN);
                             break;
                     }
@@ -47,14 +44,8 @@ namespace Player
             }
         }
 
-        private void Bind()
-        {
-            _playerInput.OnMove += CheckMoveRotation;
-        }
+        private void Bind() => _playerInput.OnMove += CheckMoveRotation;
 
-        private void Expose()
-        {
-            _playerInput.OnMove -= CheckMoveRotation;
-        }
+        private void Expose() => _playerInput.OnMove -= CheckMoveRotation;
     }
 }

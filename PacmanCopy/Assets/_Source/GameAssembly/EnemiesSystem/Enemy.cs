@@ -1,69 +1,50 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Entities;
+using Level;
+using Player;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Utils;
+using VContainer;
 
 namespace EnemiesSystem
 {
-    public class Enemy : MonoBehaviour
+    public abstract class Enemy : MonoBehaviour
     {
-        [SerializeField] private MovableEntity entity;
-        [SerializeField] private float rotateCooldown;
+        [SerializeField] protected MovableEntity entity;
+        [SerializeField] protected LayerMask interactableLayer;
 
-        private readonly MoveDirection[] _moveDirections =
+        protected readonly MoveDirection[] MoveDirections =
             { MoveDirection.UP, MoveDirection.RIGHT, MoveDirection.DOWN, MoveDirection.LEFT };
 
-        private bool _isRotateCooldown;
+        protected bool IsRotateCooldown;
+        protected PlayerHealth PlayerHealth;
+        protected Map Map;
 
-        private void Update()
+        [Inject]
+        private void Construct(PlayerHealth playerHealth, Map map)
         {
-            var result = entity.Move();
-            
-            if(_isRotateCooldown)
-                return;
-            
-            var exceptDir = entity.CurrentDirection switch
-            {
-                MoveDirection.UP => MoveDirection.DOWN,
-                MoveDirection.RIGHT => MoveDirection.LEFT,
-                MoveDirection.DOWN => MoveDirection.UP,
-                MoveDirection.LEFT => MoveDirection.RIGHT,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            PlayerHealth = playerHealth;
+            Map = map;
 
-            var newDirections = _moveDirections.Except(new[] { exceptDir }).ToList();
-            
-            var toRotate = newDirections.Where(direction => entity.CanRotate(direction)).ToList();
-
-            var rndRotate = Random.Range(0, toRotate.Count + 1);
-
-            if (toRotate.Count > 0 && rndRotate != 0)
-            {
-                entity.Rotate(toRotate[rndRotate - 1]);
-                StartCoroutine(RotateCooldownCoroutine());
-                Debug.Log(toRotate[rndRotate - 1].ToString());
-                return;
-            }
-
-            
-            if (result)
-                return;
-
-            var moveDirections = _moveDirections.Except(new[] { entity.CurrentDirection }).ToList();
-            entity.Rotate(moveDirections[Random.Range(0, moveDirections.Count)]);
-            StartCoroutine(RotateCooldownCoroutine());
+            entity.OnPathEnded += OnPathEnded;
         }
 
-        private IEnumerator RotateCooldownCoroutine()
+        protected virtual void OnPathEnded()
         {
-            _isRotateCooldown = true;
-            
-            yield return new WaitForSeconds(rotateCooldown);
-            
-            _isRotateCooldown = false;
+        }
+        
+        protected void StartPath(FloorCell targetCell, List<FloorCell> exceptCells = null, bool resetPos = true)
+        {
+            entity.CheckCurrentCell();
+            entity.StartPathMove(Map.GetPathToCell(entity.CurrentCell, targetCell, exceptCells), resetPos);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!LayerService.CheckLayersEquality(other.gameObject.layer, interactableLayer))
+                return;
+
+            PlayerHealth.TakeDamage();
         }
     }
 }

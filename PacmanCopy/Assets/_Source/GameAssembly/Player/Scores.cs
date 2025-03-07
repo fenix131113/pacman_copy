@@ -6,7 +6,8 @@ namespace Player
     public class Scores
     {
         public int Score { get; private set; }
-        
+        public int CollectedBonuses { get; private set; }
+
         public event Action OnScoreChanged;
 
         public void AddScore(int score)
@@ -14,5 +15,7 @@ namespace Player
             Score = Mathf.Clamp(Score + score, 0, int.MaxValue);
             OnScoreChanged?.Invoke();
         }
+
+        public void AddCollectedBonus() => CollectedBonuses++;
     }
 }
