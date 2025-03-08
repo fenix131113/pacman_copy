@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EnemiesSystem.Data;
 using Entities;
 using Entities.Data;
 using Level;
@@ -29,6 +30,9 @@ namespace EnemiesSystem
 
         private void Update()
         {
+            if(CurrentState == EnemyState.DEAD)
+                return;
+            
             var result = entity.CustomMoveEntity();
 
             if (entity.MovementControlType == MovementControlType.PATH)
@@ -60,8 +64,21 @@ namespace EnemiesSystem
             StartCoroutine(RotateCooldownCoroutine());
         }
 
+        protected override void OnTeleported()
+        {
+            IsRotateCooldown = false;
+            SetEnemyState(EnemyState.ATTACK);
+            entity.NativeSetMovementType(MovementControlType.CUSTOM);
+        }
+
         protected override void OnPathEnded()
         {
+            if (CurrentState == EnemyState.DEAD)
+            {
+                StartCoroutine(BaseRecoverCoroutine());
+                return;
+            }
+
             StartPath(GetEscapeCell(), new List<FloorCell> { playerMovable.CurrentCell });
             _returnedToPlayer = false;
         }
@@ -82,14 +99,20 @@ namespace EnemiesSystem
 
         private void OnEscapeTriggerEnter(GameObject obj)
         {
-            if (entity.MovementControlType == MovementControlType.PATH)
+            if (entity.MovementControlType == MovementControlType.PATH || CurrentState == EnemyState.DEAD)
                 return;
 
             _returnedToPlayer = false;
             StartPath(GetEscapeCell(), new List<FloorCell> { playerMovable.CurrentCell });
         }
 
-        private void OnEscapeTriggerExit(GameObject obj) => entity.NativeSetMovementType(MovementControlType.CUSTOM);
+        private void OnEscapeTriggerExit(GameObject obj)
+        {
+            if(CurrentState == EnemyState.DEAD)
+                return;
+            
+            entity.NativeSetMovementType(MovementControlType.CUSTOM);
+        }
 
         private FloorCell GetEscapeCell()
         {
@@ -107,7 +130,7 @@ namespace EnemiesSystem
         {
             IsRotateCooldown = true;
 
-            yield return new WaitForSeconds(rotateCooldown);
+            yield return new WaitForSecondsRealtime(rotateCooldown);
 
             IsRotateCooldown = false;
         }

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Linq;
+using EnemiesSystem.Data;
 using Entities;
+using Entities.Data;
 using UnityEngine;
 
 namespace EnemiesSystem
@@ -8,8 +10,14 @@ namespace EnemiesSystem
     public class PinkEnemy : Enemy
     {
         [SerializeField] private float rotateCooldown;
-        
+
         private void Update()
+        {
+            if (CurrentState != EnemyState.DEAD)
+                DefaultLogic();
+        }
+
+        private void DefaultLogic()
         {
             var result = entity.CustomMoveEntity();
 
@@ -39,11 +47,24 @@ namespace EnemiesSystem
             StartCoroutine(RotateCooldownCoroutine());
         }
         
+        protected override void OnTeleported()
+        {
+            IsRotateCooldown = false;
+            SetEnemyState(EnemyState.ATTACK);
+            entity.NativeSetMovementType(MovementControlType.CUSTOM);
+        }
+
+        protected override void OnPathEnded()
+        {
+            if(CurrentState == EnemyState.DEAD)
+                StartCoroutine(BaseRecoverCoroutine());
+        }
+
         private IEnumerator RotateCooldownCoroutine()
         {
             IsRotateCooldown = true;
 
-            yield return new WaitForSeconds(rotateCooldown);
+            yield return new WaitForSecondsRealtime(rotateCooldown);
 
             IsRotateCooldown = false;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using EnemiesSystem.Data;
 using Entities;
 using Entities.Data;
 using UnityEngine;
@@ -25,6 +26,9 @@ namespace EnemiesSystem
 
         private void Update()
         {
+            if(CurrentState == EnemyState.DEAD)
+                return;
+            
             var result = entity.CustomMoveEntity();
 
             if (entity.MovementControlType == MovementControlType.PATH)
@@ -56,8 +60,21 @@ namespace EnemiesSystem
             StartCoroutine(RotateCooldownCoroutine());
         }
 
+        protected override void OnTeleported()
+        {
+            IsRotateCooldown = false;
+            SetEnemyState(EnemyState.ATTACK);
+            entity.NativeSetMovementType(MovementControlType.CUSTOM);
+        }
+        
         protected override void OnPathEnded()
         {
+            if (CurrentState == EnemyState.DEAD)
+            {
+                StartCoroutine(BaseRecoverCoroutine());
+                return;
+            }
+
             if (_playerInRange)
             {
                 _playerInRange = false;
@@ -71,6 +88,9 @@ namespace EnemiesSystem
 
         private void OnAttackTriggerEnter(GameObject obj)
         {
+            if(CurrentState == EnemyState.DEAD)
+                return;
+            
             _playerInRange = true;
             if (entity.MovementControlType == MovementControlType.PATH)
                 return;
@@ -86,6 +106,9 @@ namespace EnemiesSystem
         {
             _playerInRange = false;
 
+            if(CurrentState == EnemyState.DEAD)
+                return;
+            
             if (_rebuildPathCoroutine != null)
             {
                 StopCoroutine(_rebuildPathCoroutine);
@@ -99,7 +122,7 @@ namespace EnemiesSystem
         {
             IsRotateCooldown = true;
 
-            yield return new WaitForSeconds(rotateCooldown);
+            yield return new WaitForSecondsRealtime(rotateCooldown);
 
             IsRotateCooldown = false;
         }
@@ -110,6 +133,9 @@ namespace EnemiesSystem
             {
                 yield return new WaitForSeconds(rebuildPathToPlayerCooldown);
 
+                if(CurrentState == EnemyState.DEAD)
+                    yield break;
+                
                 if (!_playerInRange)
                     yield break;
 

@@ -18,6 +18,7 @@ namespace Entities
 
         public MovementControlType MovementControlType { get; private set; }
         private EntityPath _currentPath;
+        private FloorCell _startCell;
         private bool _canMove;
         private Ray _obstaclesRay;
         private Ray _rotationRay;
@@ -25,6 +26,7 @@ namespace Entities
 
         public event Action OnPathEnded;
         public event Action OnNextNodeReached;
+        public event Action OnTeleported;
 
         public const float MAX_ROTATION_OFFSET = 0.1f;
 
@@ -33,12 +35,17 @@ namespace Entities
 
         private void Awake() => Rotate(CurrentDirection);
 
-        private void Start() => CheckCurrentCell();
+        private void Start()
+        {
+            CheckCurrentCell();
+            _startCell = CurrentCell;
+        }
 
         private void OnDestroy()
         {
             OnPathEnded = null;
             OnNextNodeReached = null;
+            OnTeleported = null;
         }
 
         private void Update()
@@ -53,7 +60,7 @@ namespace Entities
         {
             CheckCurrentCell();
             CheckForObstacles();
-
+            
             if (!_canMove)
                 return false;
 
@@ -127,6 +134,15 @@ namespace Entities
 
         #region Utils
 
+        public void ReturnToStart() => Teleport(_startCell);
+
+        public void Teleport(FloorCell target)
+        {
+            transform.position = new Vector3(target.transform.position.x, target.transform.position.y, transform.position.z);
+            CheckCurrentCell();
+            OnTeleported?.Invoke();
+        }
+        
         public bool CanRotate(MoveDirection direction)
         {
             var angleInDegrees = (Vector3.forward * MoveDirectionUtils.GetDirectionDegrees(direction)).z;

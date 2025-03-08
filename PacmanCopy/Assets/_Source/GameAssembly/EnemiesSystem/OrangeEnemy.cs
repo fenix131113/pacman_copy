@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnemiesSystem.Data;
 using Level;
 using UnityEngine;
 
@@ -13,12 +14,35 @@ namespace EnemiesSystem
 
         private void Start()
         {
+            StartDefaultLogic();
+        }
+
+        private void StartDefaultLogic()
+        {
             StartPath(GetMoveTarget());
+        }
+
+        protected override void OnEnemyStateChanged()
+        {
+            if(CurrentState == EnemyState.ATTACK)
+                StartDefaultLogic();
         }
 
         protected override void OnPathEnded()
         {
+            if (CurrentState == EnemyState.DEAD)
+            {
+                StartCoroutine(BaseRecoverCoroutine());
+                return;
+            }
+
             StartPath(GetMoveTarget());
+        }
+        
+        protected override void OnTeleported()
+        {
+            SetEnemyState(EnemyState.ATTACK);
+            StartDefaultLogic();
         }
 
         private FloorCell GetMoveTarget()

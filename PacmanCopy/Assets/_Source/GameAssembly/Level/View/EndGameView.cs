@@ -34,7 +34,11 @@ namespace Level.View
 
         private void Win() => ActivateEndMenu(winMessage);
 
-        private void Loose() => ActivateEndMenu(looseMessage);
+        private void Loose()
+        {
+            Time.timeScale = 0;
+            ActivateEndMenu(looseMessage);
+        }
 
         private void CheckLooseConditions()
         {
@@ -54,10 +58,18 @@ namespace Level.View
             menu.SetActive(true);
         }
 
-        private static void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        
-        private static void LoadMainMenu() => SceneManager.LoadScene(0);
-        
+        private static void Restart()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private static void LoadMainMenu()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(0);
+        }
+
         private void Bind()
         {
             restartButton.onClick.AddListener(Restart);

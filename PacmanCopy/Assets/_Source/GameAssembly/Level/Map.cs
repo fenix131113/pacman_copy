@@ -9,8 +9,6 @@ namespace Level
     public class Map : MonoBehaviour
     {
         [SerializeField] private List<FloorCell> mapCells;
-        [SerializeField] private FloorCell startTest;
-        [SerializeField] private FloorCell endTest;
 
         private readonly Dictionary<Vector2Int, FloorCell> _mapCells = new();
         

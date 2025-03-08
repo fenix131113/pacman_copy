@@ -1172,7 +1172,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 0.75}
+  m_Size: {x: 0.65, y: 0.65}
   m_EdgeRadius: 0
 --- !u!212 &91423592
 SpriteRenderer:
@@ -1245,6 +1245,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 8
+  enemyRenderer: {fileID: 91423592}
+  recoverTime: 3
   allowTargets:
   - {fileID: 1962451388}
   - {fileID: 1301511883}
@@ -5326,6 +5328,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: ac1d6390b9144f246965d0379932cca2, type: 3}
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
       objectReference: {fileID: 0}
@@ -5493,6 +5499,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: ac1d6390b9144f246965d0379932cca2, type: 3}
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
@@ -6329,10 +6339,12 @@ GameObject:
   - component: {fileID: 669942935}
   - component: {fileID: 669942934}
   - component: {fileID: 669942936}
+  - component: {fileID: 669942940}
   - component: {fileID: 669942937}
   - component: {fileID: 669942938}
   - component: {fileID: 669942939}
-  - component: {fileID: 669942940}
+  - component: {fileID: 669942942}
+  - component: {fileID: 669942941}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -6454,7 +6466,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.334, y: 1.334}
+  m_Size: {x: 1.333, y: 1.333}
   m_EdgeRadius: 0
 --- !u!114 &669942937
 MonoBehaviour:
@@ -6470,7 +6482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ObstaclesLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   speed: 3
 --- !u!114 &669942938
 MonoBehaviour:
@@ -6501,6 +6513,7 @@ MonoBehaviour:
   - {fileID: 1322084748}
   - {fileID: 1469452873}
   - {fileID: 1300863508}
+  healthDecreaseAnimTime: 2
 --- !u!50 &669942940
 Rigidbody2D:
   serializedVersion: 5
@@ -6528,6 +6541,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &669942941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669942933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b738ecd44e4b01a473b03b47fb4d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 669942934}
+  duration: 0.1
+  blinkOnStart: 0
+--- !u!114 &669942942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669942933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a45c226a6ee34d23895414618e84d278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBlinking: {fileID: 669942941}
+  effectDuration: 2
+  movablesToReturn:
+  - {fileID: 669942937}
+  - {fileID: 1812250950}
+  - {fileID: 1988954002}
+  - {fileID: 1418892077}
+  - {fileID: 91423590}
 --- !u!1001 &672143524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9389,6 +9437,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3504874071541095496, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
   m_PrefabInstance: {fileID: 1042492670}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1047876972
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1858547569}
+    m_Modifications:
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.4269123
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5741989132492067186, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857589666729304431, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_Name
+      value: PlayerObstacleWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857589666729304431, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+--- !u!4 &1047876973 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3855686950819601808, guid: c5e807a9efa82c047b8c3e27b731a8e7, type: 3}
+  m_PrefabInstance: {fileID: 1047876972}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1054748536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10429,6 +10551,7 @@ MonoBehaviour:
   - {fileID: 1418892074}
   - {fileID: 91423587}
   - {fileID: 464185126}
+  scoresSettingsSO: {fileID: 11400000, guid: 1d26d4068e9b57246a14c2ca326eae2e, type: 2}
 --- !u!1001 &1194183941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10437,6 +10560,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: 501f6b94f293cc64aa824b8795a0c9ee, type: 3}
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
@@ -10933,6 +11060,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: ac1d6390b9144f246965d0379932cca2, type: 3}
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
@@ -13186,7 +13317,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 0.75}
+  m_Size: {x: 0.65, y: 0.65}
   m_EdgeRadius: 0
 --- !u!212 &1418892079
 SpriteRenderer:
@@ -13259,6 +13390,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 8
+  enemyRenderer: {fileID: 1418892079}
+  recoverTime: 3
   rotateCooldown: 0.15
 --- !u!1001 &1426472147
 PrefabInstance:
@@ -15342,6 +15475,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: 501f6b94f293cc64aa824b8795a0c9ee, type: 3}
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
       objectReference: {fileID: 0}
@@ -15693,6 +15830,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: 501f6b94f293cc64aa824b8795a0c9ee, type: 3}
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
@@ -16546,6 +16687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1780809407}
   - component: {fileID: 1780809408}
+  - component: {fileID: 1780809409}
   m_Layer: 0
   m_Name: ---[SYSTEM]---
   m_TagString: Untagged
@@ -16787,6 +16929,24 @@ MonoBehaviour:
   - {fileID: 1882192865}
   - {fileID: 1921830535}
   - {fileID: 235460435}
+--- !u!114 &1780809409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780809406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e66d28d9eca41b8a23c93183b2466d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+  - {fileID: 1812250953}
+  - {fileID: 1988954005}
+  - {fileID: 1418892080}
+  - {fileID: 91423593}
+  effectDuration: 8
 --- !u!1001 &1781427855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17536,7 +17696,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 0.75}
+  m_Size: {x: 0.65, y: 0.65}
   m_EdgeRadius: 0
 --- !u!212 &1812250952
 SpriteRenderer:
@@ -17609,6 +17769,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 8
+  enemyRenderer: {fileID: 1812250952}
+  recoverTime: 3
   playerMovable: {fileID: 669942937}
   attackTrigger: {fileID: 1206337439}
   rotateCooldown: 0.2
@@ -18505,6 +18667,7 @@ Transform:
   - {fileID: 1988954000}
   - {fileID: 1418892075}
   - {fileID: 91423588}
+  - {fileID: 1047876973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1858547570
@@ -18722,8 +18885,6 @@ MonoBehaviour:
   - {fileID: 1882192865}
   - {fileID: 1921830535}
   - {fileID: 235460435}
-  startTest: {fileID: 154115020}
-  endTest: {fileID: 774829981}
 --- !u!1001 &1866546242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19942,6 +20103,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 834572605}
     m_Modifications:
     - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
+      propertyPath: bonusPrefab
+      value: 
+      objectReference: {fileID: 6115143849274993332, guid: 501f6b94f293cc64aa824b8795a0c9ee, type: 3}
+    - target: {fileID: 238326619517184332, guid: 130cfed2e21cddb4099db6efd9a488f1, type: 3}
       propertyPath: <CanSpawnBonus>k__BackingField
       value: 1
       objectReference: {fileID: 0}
@@ -20407,7 +20572,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.75, y: 0.75}
+  m_Size: {x: 0.65, y: 0.65}
   m_EdgeRadius: 0
 --- !u!212 &1988954004
 SpriteRenderer:
@@ -20480,6 +20645,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 8
+  enemyRenderer: {fileID: 1988954004}
+  recoverTime: 3
   playerMovable: {fileID: 669942937}
   escapeTrigger: {fileID: 1022600090}
   floorLayer:

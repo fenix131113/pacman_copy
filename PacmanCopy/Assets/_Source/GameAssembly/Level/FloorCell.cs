@@ -18,9 +18,15 @@ namespace Level
         [field: SerializeField] public FloorCell DownCell { get; private set; }
         [field: SerializeField] public FloorCell LeftCell { get; private set; }
 
-        private Scores _scores;
+        private BonusLoader _bonusLoader;
 
-        public void Init(Scores scores) => _scores = scores;
+        public void Init(BonusLoader bonusLoader, Bonus bonusPrefabOverride = null)
+        {
+            _bonusLoader = bonusLoader;
+            
+            if(bonusPrefabOverride)
+                bonusPrefab = bonusPrefabOverride;
+        }
 
         private void Awake()
         {
@@ -72,7 +78,7 @@ namespace Level
                 return null;
 
             var spawned = Instantiate(bonusPrefab, transform.position, Quaternion.identity);
-            spawned.Init(_scores);
+            spawned.Init(_bonusLoader);
             return spawned;
         }
         

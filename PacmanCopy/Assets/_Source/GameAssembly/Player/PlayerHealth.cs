@@ -15,11 +15,5 @@ namespace Player
             Health = Mathf.Clamp(Health - 1, 0, MaxHealth);
             OnHealthChanged?.Invoke();
         }
-
-        public void HealOne()
-        {
-            Health = Mathf.Clamp(Health + 1, 0, MaxHealth);
-            OnHealthChanged?.Invoke();
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Player;
+﻿using Level.Data;
 using UnityEngine;
 using Utils;
 
@@ -6,12 +6,12 @@ namespace Level
 {
     public class Bonus : MonoBehaviour
     {
-        [SerializeField] private int score;
         [SerializeField] private LayerMask interactLayer;
+        [SerializeField] private BonusType bonusType;
 
-        private Scores _scores;
+        private BonusLoader _bonusLoader;
 
-        public void Init(Scores scores) => _scores = scores;
+        public void Init(BonusLoader bonusLoader) => _bonusLoader = bonusLoader;
 
         private void OnTriggerEnter2D(Collider2D
             other)
@@ -19,8 +19,7 @@ namespace Level
             if(!LayerService.CheckLayersEquality(other.gameObject.layer, interactLayer))
                 return;
             
-            _scores.AddCollectedBonus();
-            _scores.AddScore(score);
+            _bonusLoader.OnBonusCollected(bonusType);
             gameObject.SetActive(false);
         }
     }

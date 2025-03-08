@@ -1,5 +1,7 @@
 using Level;
 using Player;
+using Player.Data;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -7,6 +9,8 @@ namespace Core
 {
     public class GameLifeTimeScope : LifetimeScope
     {
+        [SerializeField] private ScoresSettingsSO scoresSettingsSO;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             #region Player
@@ -17,6 +21,8 @@ namespace Core
 
             #endregion
 
+            builder.RegisterInstance(scoresSettingsSO);
+            
             builder.RegisterComponentInHierarchy<BonusLoader>();
 
             builder.RegisterComponentInHierarchy<Map>();
