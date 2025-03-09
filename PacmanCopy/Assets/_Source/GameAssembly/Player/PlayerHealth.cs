@@ -5,8 +5,8 @@ namespace Player
 {
     public class PlayerHealth
     {
-        public int Health { get; private set; } = 3;
-        public int MaxHealth { get; private set; } = 3;
+        public int Health { get; private set; } = 4;
+        public int MaxHealth { get; private set; } = 4;
         
         public event Action OnHealthChanged;
 

@@ -15,6 +15,7 @@ namespace Level.View
         [SerializeField] private string looseMessage;
         [SerializeField] private Button restartButton;
         [SerializeField] private Button mainMenuButton;
+        [SerializeField] private AudioSource winSoundSource;
 
         private PlayerHealth _playerHealth;
         private BonusLoader _bonusLoader;
@@ -32,7 +33,11 @@ namespace Level.View
 
         private void OnDestroy() => Expose();
 
-        private void Win() => ActivateEndMenu(winMessage);
+        private void Win()
+        {
+            ActivateEndMenu(winMessage);
+            winSoundSource.PlayOneShot(winSoundSource.clip);
+        }
 
         private void Loose()
         {

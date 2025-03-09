@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CanSpawnBonus>k__BackingField: 1
-  bonusPrefab: {fileID: 6115143849274993332, guid: ac1d6390b9144f246965d0379932cca2, type: 3}
+  <BonusPrefab>k__BackingField: {fileID: 6115143849274993332, guid: ac1d6390b9144f246965d0379932cca2, type: 3}
   floorLayer:
     serializedVersion: 2
     m_Bits: 256

@@ -67,7 +67,7 @@ namespace EnemiesSystem
             OnEnemyStateChanged();
         }
 
-        protected virtual void OnTeleported()
+        protected virtual void OnTeleported(bool resetEntity)
         {
         }
 

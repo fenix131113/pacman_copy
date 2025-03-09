@@ -138,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cfaa3b55924df08f538f7845ebb700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 10
   interactLayer:
     serializedVersion: 2
     m_Bits: 8
+  <BonusType>k__BackingField: 0
 --- !u!50 &-3554869447426938840
 Rigidbody2D:
   serializedVersion: 5

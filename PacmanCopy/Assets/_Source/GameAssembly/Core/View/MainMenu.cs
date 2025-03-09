@@ -15,12 +15,12 @@ namespace Core.View
         private void OnDestroy() => Expose();
 
         private void LoadGame() => SceneManager.LoadScene(sceneBuildIndex: 1);
-        private void OpenSettings() => settingsPanel.SetActive(true);
+        private void ToggleSettings() => settingsPanel.SetActive(!settingsPanel.activeSelf);
 
         private void Bind()
         {
             startGameButton.onClick.AddListener(LoadGame);
-            settingsButton.onClick.AddListener(OpenSettings);
+            settingsButton.onClick.AddListener(ToggleSettings);
         }
 
         private void Expose()

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entities.Data;
-using NUnit.Framework;
 using UnityEngine;
 
 namespace Level
@@ -9,6 +8,7 @@ namespace Level
     public class Map : MonoBehaviour
     {
         [SerializeField] private List<FloorCell> mapCells;
+        private EntityPath _currentPath;
 
         private readonly Dictionary<Vector2Int, FloorCell> _mapCells = new();
         

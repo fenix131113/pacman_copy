@@ -39,8 +39,11 @@ namespace EnemiesSystem
             StartPath(GetMoveTarget());
         }
         
-        protected override void OnTeleported()
+        protected override void OnTeleported(bool resetEntity)
         {
+            if(!resetEntity)
+                return;
+            
             SetEnemyState(EnemyState.ATTACK);
             StartDefaultLogic();
         }

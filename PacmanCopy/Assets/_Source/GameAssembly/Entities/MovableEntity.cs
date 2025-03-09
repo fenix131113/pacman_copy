@@ -26,7 +26,7 @@ namespace Entities
 
         public event Action OnPathEnded;
         public event Action OnNextNodeReached;
-        public event Action OnTeleported;
+        public event Action<bool> OnTeleported;
 
         public const float MAX_ROTATION_OFFSET = 0.1f;
 
@@ -134,13 +134,13 @@ namespace Entities
 
         #region Utils
 
-        public void ReturnToStart() => Teleport(_startCell);
+        public void ReturnToStart() => Teleport(_startCell, true);
 
-        public void Teleport(FloorCell target)
+        public void Teleport(FloorCell target, bool resetEntity)
         {
             transform.position = new Vector3(target.transform.position.x, target.transform.position.y, transform.position.z);
             CheckCurrentCell();
-            OnTeleported?.Invoke();
+            OnTeleported?.Invoke(resetEntity);
         }
         
         public bool CanRotate(MoveDirection direction)

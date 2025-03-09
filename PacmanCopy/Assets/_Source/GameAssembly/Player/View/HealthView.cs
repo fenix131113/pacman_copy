@@ -10,6 +10,8 @@ namespace Player.View
     {
         [SerializeField] private Image[] healthImages;
         [SerializeField] private float healthDecreaseAnimTime = 0.5f;
+        [SerializeField] private AudioSource damageSoundSource;
+        [SerializeField] private AudioSource musicSource;
 
         private const float HEALTH_BLINKING_INTERVAL = 0.1f;
 
@@ -34,6 +36,11 @@ namespace Player.View
         private IEnumerator HealthDecreaseAnimCoroutine(Image target)
         {
             var elapsedTime = 0f;
+            
+            var musicTempVolume = musicSource.volume;
+            musicSource.volume = 0f;
+            damageSoundSource.PlayOneShot(damageSoundSource.clip);
+            
             while (elapsedTime < healthDecreaseAnimTime)
             {
                 yield return new WaitForSecondsRealtime(healthDecreaseAnimTime / (healthDecreaseAnimTime / HEALTH_BLINKING_INTERVAL));
@@ -42,6 +49,7 @@ namespace Player.View
                 target.gameObject.SetActive(!target.gameObject.activeSelf);
             }
 
+            musicSource.volume = musicTempVolume;
             target.gameObject.SetActive(false);
         }
     }

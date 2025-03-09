@@ -13,6 +13,9 @@ namespace Level
     {
         [SerializeField] private List<Enemy> enemies;
         [SerializeField] private float effectDuration;
+        [SerializeField] private AudioSource musicAudioSource;
+        [SerializeField] private AudioClip defaultMusicTheme;
+        [SerializeField] private AudioClip playerAttackMusic;
 
         private BonusLoader _bonusLoader;
         private Scores _scores;
@@ -30,6 +33,9 @@ namespace Level
 
         private void StartEffect()
         {
+            musicAudioSource.clip = playerAttackMusic;
+            musicAudioSource.Play();
+            
             foreach (var enemy in enemies.Where(enemy => enemy.CurrentState != EnemyState.DEAD))
                 enemy.SetEnemyState(EnemyState.ESCAPE);
 
@@ -38,6 +44,9 @@ namespace Level
 
         private void StopEffect()
         {
+            musicAudioSource.clip = defaultMusicTheme;
+            musicAudioSource.Play();
+            
             foreach (var enemy in enemies)
                 enemy.SetEnemyState(EnemyState.ATTACK);
 

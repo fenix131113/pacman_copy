@@ -10,7 +10,7 @@ namespace Level
     {
         [field: SerializeField] public bool CanSpawnBonus { get; private set; } = true;
 
-        [SerializeField] private Bonus bonusPrefab;
+        [field: SerializeField] public Bonus BonusPrefab { get; private set; }
         [SerializeField] private LayerMask floorLayer;
 
         [field: SerializeField] public FloorCell UpCell { get; private set; }
@@ -18,14 +18,16 @@ namespace Level
         [field: SerializeField] public FloorCell DownCell { get; private set; }
         [field: SerializeField] public FloorCell LeftCell { get; private set; }
 
+        private AudioSource _bonusSound;
         private BonusLoader _bonusLoader;
 
-        public void Init(BonusLoader bonusLoader, Bonus bonusPrefabOverride = null)
+        public void Init(BonusLoader bonusLoader, AudioSource bonusSound, Bonus bonusPrefabOverride = null)
         {
             _bonusLoader = bonusLoader;
+            _bonusSound = bonusSound;
             
             if(bonusPrefabOverride)
-                bonusPrefab = bonusPrefabOverride;
+                BonusPrefab = bonusPrefabOverride;
         }
 
         private void Awake()
@@ -54,19 +56,19 @@ namespace Level
 
         private void LoadNeighbours()
         {
-            UpCell = Physics2D
+            UpCell ??= Physics2D
                 .OverlapPoint(
                     new Vector3(transform.position.x, transform.position.y + transform.lossyScale.y,
                         transform.position.z), floorLayer)?.GetComponent<FloorCell>();
-            RightCell = Physics2D
+            RightCell ??= Physics2D
                 .OverlapPoint(
                     new Vector3(transform.position.x + transform.lossyScale.x, transform.position.y,
                         transform.position.z), floorLayer)?.GetComponent<FloorCell>();
-            DownCell = Physics2D
+            DownCell ??= Physics2D
                 .OverlapPoint(
                     new Vector3(transform.position.x, transform.position.y - transform.lossyScale.y,
                         transform.position.z), floorLayer)?.GetComponent<FloorCell>();
-            LeftCell = Physics2D
+            LeftCell ??= Physics2D
                 .OverlapPoint(
                     new Vector3(transform.position.x - transform.lossyScale.x, transform.position.y,
                         transform.position.z), floorLayer)?.GetComponent<FloorCell>();
@@ -77,8 +79,8 @@ namespace Level
             if (!CanSpawnBonus)
                 return null;
 
-            var spawned = Instantiate(bonusPrefab, transform.position, Quaternion.identity);
-            spawned.Init(_bonusLoader);
+            var spawned = Instantiate(BonusPrefab, transform.position, Quaternion.identity);
+            spawned.Init(_bonusLoader, _bonusSound);
             return spawned;
         }
         

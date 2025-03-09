@@ -23,6 +23,12 @@ namespace Player
             Score = Mathf.Clamp(Score + _settings.MiniBonusScores, 0, int.MaxValue);
             OnScoreChanged?.Invoke();
         }
+        
+        public void AddExtraBonusScores()
+        {
+            Score = Mathf.Clamp(Score + _settings.ExtraBonusScores, 0, int.MaxValue);
+            OnScoreChanged?.Invoke();
+        }
 
         public void AddCollectedBonus() => CollectedBonuses++;
 

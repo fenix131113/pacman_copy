@@ -142,7 +142,7 @@ MonoBehaviour:
   interactLayer:
     serializedVersion: 2
     m_Bits: 8
-  bonusType: 1
+  <BonusType>k__BackingField: 1
 --- !u!50 &-3554869447426938840
 Rigidbody2D:
   serializedVersion: 5

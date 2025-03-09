@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ScoresSettings
   m_EditorClassIdentifier: 
   <MiniBonusScores>k__BackingField: 50
+  <ExtraBonusScores>k__BackingField: 300
   <KillScores>k__BackingField: 200

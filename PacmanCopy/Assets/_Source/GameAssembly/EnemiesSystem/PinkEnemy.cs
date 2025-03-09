@@ -47,8 +47,11 @@ namespace EnemiesSystem
             StartCoroutine(RotateCooldownCoroutine());
         }
         
-        protected override void OnTeleported()
+        protected override void OnTeleported(bool resetEntity)
         {
+            if(!resetEntity)
+                return;
+            
             IsRotateCooldown = false;
             SetEnemyState(EnemyState.ATTACK);
             entity.NativeSetMovementType(MovementControlType.CUSTOM);
