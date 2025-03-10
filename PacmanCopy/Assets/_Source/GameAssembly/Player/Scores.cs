@@ -9,6 +9,7 @@ namespace Player
     {
         public int Score { get; private set; }
         public int CollectedBonuses { get; private set; }
+        public int CollectedExtraBonuses { get; private set; }
 
         private readonly ScoresSettingsSO _settings;
         private int _killMultiplier = 1;
@@ -26,6 +27,7 @@ namespace Player
         
         public void AddExtraBonusScores()
         {
+            CollectedExtraBonuses++;
             Score = Mathf.Clamp(Score + _settings.ExtraBonusScores, 0, int.MaxValue);
             OnScoreChanged?.Invoke();
         }
